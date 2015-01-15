@@ -9,7 +9,10 @@
             [ring.adapter.jetty :as jetty]
             [ring.middleware.basic-authentication :as basic]
             [cemerick.drawbridge :as drawbridge]
-            [environ.core :refer [env]]))
+            [environ.core :refer [env]]
+            [selmer.parser :as selmer]
+            [ring.middleware.params :as params]
+            [freebase.core :as freebase]))
 
 (defn- authenticated? [user pass]
   ;; TODO: heroku config:add REPL_USER=[...] REPL_PASSWORD=[...]
@@ -20,13 +23,32 @@
       (session/wrap-session)
       (basic/wrap-basic-authentication authenticated?)))
 
+
+(defn artist-tracks [artist]
+  (set
+   (:track
+    (freebase/query
+     {:name artist
+      :type "/music/artist"
+      :track []
+      :limit 1}))))
+
+
+(defn haiku-handler [artist]
+  {:status 200
+   :headers {"Content-Type" "text/html; charset=utf-8"}
+   :body (selmer/render-file
+          "haiku.tmpl"
+          {:artist artist
+           :tracks (if (not artist)
+                     nil
+                     (artist-tracks artist))})})
+
+
 (defroutes app
   (ANY "/repl" {:as req}
        (drawbridge req))
-  (GET "/" []
-       {:status 200
-        :headers {"Content-Type" "text/plain"}
-        :body (pr-str ["Hello" :from 'Heroku])})
+  (GET "/" {params :params} (haiku-handler (:artist params)))
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
@@ -42,6 +64,7 @@
   ;; TODO: heroku config:add SESSION_SECRET=$RANDOM_16_CHARS
   (let [store (cookie/cookie-store {:key (env :session-secret)})]
     (-> app
+        params/wrap-params
         ((if (env :production)
            wrap-error-page
            trace/wrap-stacktrace))
