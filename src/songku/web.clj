@@ -12,7 +12,10 @@
             [environ.core :refer [env]]
             [selmer.parser :as selmer]
             [ring.middleware.params :as params]
-            [freebase.core :as freebase]))
+            [freebase.core :as freebase]
+            [com.lemonodor.syllables :as syllables]
+            [clojure.string :as string]
+            [clojure.math.combinatorics :as combo]))
 
 (defn- authenticated? [user pass]
   ;; TODO: heroku config:add REPL_USER=[...] REPL_PASSWORD=[...]
@@ -34,15 +37,32 @@
       :limit 1}))))
 
 
+(defn tokenize [text]
+  (string/split text #"[^A-Za-z']"))
+
+
+(defn sum [s]
+  (reduce + s))
+
+
 (defn haiku-handler [artist]
   {:status 200
    :headers {"Content-Type" "text/html; charset=utf-8"}
    :body (selmer/render-file
           "haiku.tmpl"
           {:artist artist
-           :tracks (if (not artist)
-                     nil
-                     (artist-tracks artist))})})
+           :tracks (map (fn [name]
+                          {:name name
+                           :syllables (set
+                                       (map
+                                        sum
+                                        (apply
+                                         combo/cartesian-product
+                                         (map syllables/count-syllables
+                                              (tokenize name)))))})
+                        (if (not artist)
+                          nil
+                          (artist-tracks artist)))})})
 
 
 (defroutes app
