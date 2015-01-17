@@ -36,11 +36,15 @@
           <button type="submit" class="btn btn-default">Get haiku</button>
         </form>
       </div>
+      {% for haiku in haikus %}
       <div class="row-fluid">
-        {% for track in tracks %}
-        <p>{{ track.syllables }} {{ track.name }}</p>
-        {% endfor %}
+        <p>
+          {% for line in haiku %}
+            {{ line }}<br>
+          {% endfor %}
+        </p>
       </div>
+      {% endfor %}
     </div>
   </body>
 </html>

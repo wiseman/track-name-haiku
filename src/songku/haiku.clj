@@ -18,6 +18,7 @@
     "anodyne" #{3}
     "babby" #{2}
     "barbarella" #{4}
+    "beez" #{1}
     "bigga" #{2}
     "da" #{1}
     "dayz" #{1}
@@ -32,6 +33,7 @@
     "jerkin" #{2}
     "jigga" #{2}
     "l.a" #{2}
+    "legit" #{2}
     "lovesick" #{2}
     "luv" #{1}
     "mammy" #{2}
@@ -45,10 +47,12 @@
     "piranhas" #{2}
     "pissing" #{2}
     "pissings" #{2}
+    "playtime" #{2}
     "remix" #{2}
     "saltines" #{2}
     "soho" #{2}
     "spanglish" #{2}
+    "starships" #{2}
     "teardrop" #{2}
     "teardrops" #{2}
     "tha" #{1}
@@ -56,6 +60,8 @@
     "thugz" #{1}
     "uk" #{2}
     "u.s.a" #{3}
+    "va" #{1}
+    "voom" #{1}
     "vs" #{2}
     "warz" #{1}
     "wayback" #{2}
@@ -70,3 +76,16 @@
      combo/cartesian-product
      (map (partial syllables/count-syllables syllable-db)
           (analysis/tokenize text))))))
+
+
+(defn haikus [tracks]
+  (println "WOO1" tracks)
+  (println "WOO2" (first tracks))
+  (let [track-info (map (fn [track]
+                          {:name track :syllables (syllables track)})
+                        tracks)
+        fives (combo/combinations (filter #((:syllables %) 5) track-info) 2)
+        sevens (combo/combinations (filter #((:syllables %) 7) track-info) 1)]
+    (map (fn [[fives sevens]]
+           (map :name [(first fives) (first sevens) (second fives)]))
+         (combo/cartesian-product fives sevens))))

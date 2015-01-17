@@ -22,33 +22,47 @@
 (def artist-tracks
   (memoize
    (fn [artist]
-     (set
-      (:track
-       (freebase/query
-        {:name artist
-         :type "/music/artist"
-         :track []
-         :limit 1}))))))
+     (if artist
+       (set
+        (:track
+         (freebase/query
+          {:name artist
+           :type "/music/artist"
+           :track []
+           :limit 1})))
+       nil))))
 
 
+(defn parse-long [s]
+  (Long/parseLong s))
 
 
-(defn haiku-handler [artist]
-  {:status 200
-   :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body (selmer/render-file
-          "haiku.tmpl"
-          {:artist artist
-           :tracks (map (fn [name]
-                          {:name name
-                           :syllables (haiku/syllables name)})
-                        (if (not artist)
-                          nil
-                          (artist-tracks artist)))})})
+(defn haiku-handler [params]
+  (let [artist (:artist params)
+        tracks (artist-tracks (:artist params))
+        all-haikus (haiku/haikus tracks)
+        haikus (if (:all params)
+                 all-haikus
+                 (take
+                  (if-let [n (:n params)]
+                    (parse-long n)
+                    1)
+                  (shuffle all-haikus)))]
+    {:status 200
+     :headers {"Content-Type" "text/html; charset=utf-8"}
+     :body (selmer/render-file
+            "haiku.tmpl"
+            {:debug (:debug params)
+             :artist artist
+             :tracks (map
+                      (fn [track]
+                        {:name track :syllables (haiku/syllables track)})
+                      tracks)
+             :haikus (map vec haikus)})}))
 
 
 (defroutes app
-  (GET "/" {params :params} (haiku-handler (:artist params)))
+  (GET "/" {params :params} (haiku-handler params))
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
