@@ -73,11 +73,20 @@
         (.close token-stream)))))
 
 
+(defn jammin-me [tokens]
+  (map (fn [^String token]
+         (if (.endsWith token "in'")
+           (str (subs token 0 (- (count token) 3)) "ing")
+           token))
+       tokens))
+
+
 (defn tokenize
   ([text]
    (tokenize (make-tokenizer) text))
   ([tokenizer text]
    (->> text
         (tokenize-stage (first tokenizer))
+        jammin-me
         (string/join " ")
         (tokenize-stage (second tokenizer)))))

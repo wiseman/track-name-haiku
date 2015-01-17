@@ -19,5 +19,7 @@
            (analysis/tokenize "hello, & what-up? 5Beyoncé?")))
     (is (= ["beyonce's"]
            (analysis/tokenize "Beyoncé's")))
+    (is (= ["jamming" "me"]
+           (analysis/tokenize "Jammin' me")))
     (is (= []
            (analysis/tokenize "")))))
