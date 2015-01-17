@@ -63,6 +63,7 @@
 
 (defroutes app
   (GET "/" {params :params} (haiku-handler params))
+  (route/resources "/")
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))
 
