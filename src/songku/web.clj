@@ -1,21 +1,20 @@
 (ns songku.web
-  (:require [compojure.core :refer [defroutes GET PUT POST DELETE ANY]]
+  (:require [cemerick.drawbridge :as drawbridge]
+            [clojure.java.io :as io]
+            [compojure.core :refer [ANY GET defroutes]]
             [compojure.handler :refer [site]]
             [compojure.route :as route]
-            [clojure.java.io :as io]
-            [ring.middleware.stacktrace :as trace]
-            [ring.middleware.session :as session]
-            [ring.middleware.session.cookie :as cookie]
+            [environ.core :refer [env]]
+            [freebase.core :as freebase]
             [ring.adapter.jetty :as jetty]
             [ring.middleware.basic-authentication :as basic]
-            [cemerick.drawbridge :as drawbridge]
-            [environ.core :refer [env]]
-            [selmer.parser :as selmer]
             [ring.middleware.params :as params]
-            [freebase.core :as freebase]
-            [com.lemonodor.syllables :as syllables]
-            [clojure.string :as string]
-            [clojure.math.combinatorics :as combo]))
+            [ring.middleware.session :as session]
+            [ring.middleware.session.cookie :as cookie]
+            [ring.middleware.stacktrace :as trace]
+            [selmer.parser :as selmer]
+            [songku.haiku :as haiku]))
+
 
 (defn- authenticated? [user pass]
   ;; TODO: heroku config:add REPL_USER=[...] REPL_PASSWORD=[...]
@@ -37,12 +36,6 @@
       :limit 1}))))
 
 
-(defn tokenize [text]
-  (string/split text #"[^A-Za-z']"))
-
-
-(defn sum [s]
-  (reduce + s))
 
 
 (defn haiku-handler [artist]
@@ -53,13 +46,7 @@
           {:artist artist
            :tracks (map (fn [name]
                           {:name name
-                           :syllables (set
-                                       (map
-                                        sum
-                                        (apply
-                                         combo/cartesian-product
-                                         (map syllables/count-syllables
-                                              (tokenize name)))))})
+                           :syllables (haiku/syllables name)})
                         (if (not artist)
                           nil
                           (artist-tracks artist)))})})
