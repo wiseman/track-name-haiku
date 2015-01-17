@@ -7,12 +7,10 @@
                  [compojure "1.1.8"]
                  [ring/ring-jetty-adapter "1.2.2"]
                  [ring/ring-devel "1.2.2"]
-                 [ring-basic-authentication "1.0.5"]
                  [environ "0.5.0"]
-                 [com.cemerick/drawbridge "0.0.6"]
                  [selmer "0.7.9"]
                  [freebase-clj "0.1.0"]
-                 [com.lemonodor/syllables "0.1.0"]
+                 [com.lemonodor/syllables "0.1.1"]
                  [org.clojure/math.combinatorics "0.0.8"]
                  [org.apache.lucene/lucene-analyzers-common "4.9.0"]]
   :min-lein-version "2.0.0"

@@ -21,5 +21,7 @@
            (analysis/tokenize "Beyoncé's")))
     (is (= ["jamming" "me"]
            (analysis/tokenize "Jammin' me")))
+    (is (= ["u.s.a"]
+           (analysis/tokenize "U.S.A.")))
     (is (= []
            (analysis/tokenize "")))))

@@ -1,13 +1,11 @@
 (ns songku.web
-  (:require [cemerick.drawbridge :as drawbridge]
-            [clojure.java.io :as io]
+  (:require [clojure.java.io :as io]
             [compojure.core :refer [ANY GET defroutes]]
             [compojure.handler :refer [site]]
             [compojure.route :as route]
             [environ.core :refer [env]]
             [freebase.core :as freebase]
             [ring.adapter.jetty :as jetty]
-            [ring.middleware.basic-authentication :as basic]
             [ring.middleware.params :as params]
             [ring.middleware.session :as session]
             [ring.middleware.session.cookie :as cookie]
@@ -20,20 +18,17 @@
   ;; TODO: heroku config:add REPL_USER=[...] REPL_PASSWORD=[...]
   (= [user pass] [(env :repl-user false) (env :repl-password false)]))
 
-(def ^:private drawbridge
-  (-> (drawbridge/ring-handler)
-      (session/wrap-session)
-      (basic/wrap-basic-authentication authenticated?)))
 
-
-(defn artist-tracks [artist]
-  (set
-   (:track
-    (freebase/query
-     {:name artist
-      :type "/music/artist"
-      :track []
-      :limit 1}))))
+(def artist-tracks
+  (memoize
+   (fn [artist]
+     (set
+      (:track
+       (freebase/query
+        {:name artist
+         :type "/music/artist"
+         :track []
+         :limit 1}))))))
 
 
 
@@ -53,8 +48,6 @@
 
 
 (defroutes app
-  (ANY "/repl" {:as req}
-       (drawbridge req))
   (GET "/" {params :params} (haiku-handler (:artist params)))
   (ANY "*" []
        (route/not-found (slurp (io/resource "404.html")))))

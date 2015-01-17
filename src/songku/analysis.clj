@@ -22,7 +22,24 @@
 
 
 (def synonyms
-  { "&" "and"})
+  {"&" "and"
+   "'em" "them"
+   "'ol" "old"
+   "1st" "first"
+   "2nd" "second"
+   "3rd" "third"
+   "4th" "fourth"
+   "5th" "fifth"
+   "6th" "sixth"
+   "7th" "seventh"
+   "8th" "eighth"
+   "9th" "ninth"
+   "10th" "tenth"
+   "a**" "ass"
+   "f***" "fuck"
+   "h**" "hoe"
+   "s***" "shit"
+   "st" "saint"})
 
 
 (defn make-first-stage-tokenizer []
