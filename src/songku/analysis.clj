@@ -2,10 +2,13 @@
   (:require [clojure.string :as string])
   (:import (java.io StringReader)
            (org.apache.lucene.analysis TokenStream Tokenizer)
-           (org.apache.lucene.analysis.core LowerCaseFilter WhitespaceTokenizer)
+           (org.apache.lucene.analysis.core LowerCaseFilter
+                                            WhitespaceTokenizer)
            (org.apache.lucene.analysis.miscellaneous ASCIIFoldingFilter)
-           (org.apache.lucene.analysis.standard StandardFilter StandardTokenizer)
-           (org.apache.lucene.analysis.synonym SynonymFilter SynonymMap$Builder)
+           (org.apache.lucene.analysis.standard StandardFilter
+                                                StandardTokenizer)
+           (org.apache.lucene.analysis.synonym SynonymFilter
+                                               SynonymMap$Builder)
            (org.apache.lucene.analysis.tokenattributes CharTermAttribute
                                                        OffsetAttribute)
            (org.apache.lucene.util CharsRef Version)))
