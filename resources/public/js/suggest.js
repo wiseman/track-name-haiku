@@ -11,7 +11,7 @@ $(function() {
     exact: 'false',
     prefixed: 'true',
     limit: 5,
-    key: 'AIzaSyCUnZa7dlkO9wTBJZgwc9fzv7SJrpKvzA8'});
+    key: 'AIzaSyBgs8886GdJh0iOQq0XCSzEAzlSONY1R7c'});
   console.log('PARAMS');
   console.log(params);
   musicSuggester = new Bloodhound({
