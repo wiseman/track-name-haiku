@@ -29,7 +29,6 @@
                       :type "/music/artist"
                       :track []
                       :limit 1})]
-         (println "GOT RESULT" result)
          (set (:track result)))
        nil))))
 
