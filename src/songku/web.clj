@@ -1,5 +1,6 @@
 (ns songku.web
   (:require [clojure.java.io :as io]
+            [clojure.string :as string]
             [compojure.core :refer [ANY GET defroutes]]
             [compojure.handler :refer [site]]
             [compojure.route :as route]
@@ -23,13 +24,13 @@
   (memoize
    (fn [artist]
      (if artist
-       (set
-        (:track
-         (freebase/query
-          {:name artist
-           :type "/music/artist"
-           :track []
-           :limit 1})))
+       (let [result (freebase/query
+                     {:name artist
+                      :type "/music/artist"
+                      :track []
+                      :limit 1})]
+         (println "GOT RESULT" result)
+         (set (:track result)))
        nil))))
 
 
@@ -56,7 +57,11 @@
              :artist artist
              :tracks (map
                       (fn [track]
-                        {:name track :syllables (haiku/syllables track)})
+                        {:name track
+                         :syllables (let [s (haiku/syllables track)]
+                                      (if (empty? s)
+                                        "Unknown"
+                                        (string/join ", " (sort (haiku/syllables track)))))})
                       tracks)
              :haikus (map vec haikus)})}))
 

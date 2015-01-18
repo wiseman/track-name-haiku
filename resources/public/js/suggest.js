@@ -6,14 +6,19 @@ $(function() {
   }
 
   var params = $.param({
-    filter: '(all type:/music/artist type:/music/artist type:music/artist)',
+    filter: ('(all ' +
+             'type:/music/artist ' +
+             'type:/music/artist ' +
+             'type:/music/artist ' +
+             'type:/music/artist ' +
+             'type:/music/artist ' +
+             'type:/music/artist)'),
     spell: 'always',
     exact: 'false',
     prefixed: 'true',
-    limit: 5,
-    key: 'AIzaSyBgs8886GdJh0iOQq0XCSzEAzlSONY1R7c'});
-  console.log('PARAMS');
-  console.log(params);
+    limit: 5
+    //key: 'AIzaSyBgs8886GdJh0iOQq0XCSzEAzlSONY1R7c'
+  });
   musicSuggester = new Bloodhound({
     datumTokenizer: function (d) {
       return Bloodhound.tokenizers.whitespace(d.value);
