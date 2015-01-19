@@ -3,6 +3,8 @@
 This is a web app that finds haiku by checking all combinations of
 song titles by a particular musician.
 
+![Songku screenshot](/media/screenshots/songku-screenshot.png?raw=true "Songku screenshot")
+
 You can see it in action at [http://songku.herokuapp.com/](http://songku.herokuapp.com/).
 
 
