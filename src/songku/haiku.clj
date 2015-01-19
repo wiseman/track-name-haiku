@@ -79,8 +79,6 @@
 
 
 (defn haikus [tracks]
-  (println "WOO1" tracks)
-  (println "WOO2" (first tracks))
   (let [track-info (map (fn [track]
                           {:name track :syllables (syllables track)})
                         tracks)
