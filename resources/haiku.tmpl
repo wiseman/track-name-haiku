@@ -36,7 +36,7 @@
   </head>
   <body>
     <div class="container-fluid">
-      <h1 class="page-header">Song name haiku</h1>
+      <h1 class="page-header">Song name haiku <span class="small" style="float:right; font-size:60%;"><a href="about.html">About</a></span></h1>
       <p>This finds haikus using a musical artist's track names.
         Enter an artist's name below to see a random haiku.</p>
       <form style="padding-bottom: 1cm;">
@@ -56,9 +56,9 @@
       </p>
       {% endfor %}
       {% else %}
-      <p class="lead text-info">
+      <div class="alert alert-warning lead">
         Sorry, I couldn't find any haikus.  Maybe try another artist?
-      </p>
+      </div>
       {% endif %}
       {% if debug %}
       <h2 style="margin-top: 1cm">Debug info</h2>
