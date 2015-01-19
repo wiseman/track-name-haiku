@@ -23,6 +23,7 @@
 
 (def synonyms
   {"&" "and"
+   "+" "and"
    "'em" "them"
    "'ol" "old"
    "1st" "first"
