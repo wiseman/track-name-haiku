@@ -32,11 +32,11 @@
         })
       });
     </script>
-    <title>Songku</title>
+    <title>Song name haiku</title>
   </head>
   <body>
     <div class="container-fluid">
-      <h1>Songku</h1>
+      <h1 class="page-header">Song name haiku</h1>
       <p>This finds haikus using a musical artist's track names.
         Enter an artist's name below to see a random haiku.</p>
       <form style="padding-bottom: 1cm;">
@@ -46,7 +46,7 @@
         </div>
         <button type="submit" class="btn btn-default">Get haiku</button>
       </form>
-      {% if haikus|not-empty %}
+      {% if show-haikus %}
       <h2>{{ artist-name }}</h2>
       {% for haiku in haikus %}
       <p class="lead">

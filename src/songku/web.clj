@@ -49,7 +49,8 @@
                     (parse-long n)
                     1)
                   (shuffle all-haikus)))]
-    (println artist tracks all-haikus haikus)
+    (println "ARTIST" (pr-str artist))
+    (println "empty haikue?" (empty? haikus))
     {:status 200
      :headers {"Content-Type" "text/html; charset=utf-8"}
      :body (selmer/render-file
@@ -65,6 +66,7 @@
                                         "Unknown"
                                         (string/join ", " (sort (haiku/syllables track)))))})
                       tracks)
+             :show-haikus (or (not artist) (not (empty? haikus)))
              :haikus (map vec haikus)})}))
 
 
