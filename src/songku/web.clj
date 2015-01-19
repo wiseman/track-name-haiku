@@ -20,6 +20,7 @@
   (= [user pass] [(env :repl-user false) (env :repl-password false)]))
 
 
+;; Looks up artist info in freebase using MQL.
 (def get-artist-info
   (memoize
    (fn [artist]
@@ -36,10 +37,17 @@
   (Long/parseLong s))
 
 
+;; Freebase seems to return results in HTML, sometimes.  Instead of
+;; doing full entity resolution, we'll just do search-and-replace to
+;; handle the one case we see.
+(defn fix-html-entities [name]
+  (string/replace name #"&amp;" "&"))
+
+
 (defn haiku-handler [params]
   (let [artist (:artist params)
         artist-info (get-artist-info artist)
-        tracks (set (remove nil? (:track artist-info)))
+        tracks (set (map fix-html-entities (remove nil? (:track artist-info))))
         artist-name (:name artist-info)
         all-haikus (haiku/haikus tracks)
         haikus (if (:all params)
