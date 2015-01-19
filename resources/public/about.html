@@ -19,9 +19,7 @@
     <div class="container-fluid">
       <h1 class="page-header">About song name haiku
         <small>By John Wiseman</small></h1>
-      <p>
-        This app
-      </p>
+      <h2>This app...</h2>
       <ul>
         <li>is written in Clojure</li>
         <li>runs on Heroku</li>
@@ -29,29 +27,38 @@
           <a href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">CMU
             pronouncing dictionary AKA "cmudict"</a>
             (via <a href="https://github.com/wiseman/clj-syllables">com.lemonodor/syllables</a>)
-            for syllable information.</li>
+            for syllable information</li>
         <li>uses the
           <a href="https://developers.google.com/freebase/">Freebase
             API</a>
             (via <a href="https://github.com/r0man/freebase-clj">freebase-clj</a>)
             to suggest artist names and to find all tracks by an
-            artist.</li>
+            artist</li>
         <li>uses <a href="http://lucene.apache.org/">Lucene</a> for
-        some text processing.</li>
+        some text processing</li>
       </ul>
       <p>
         The code is open source and is
         available <a href="https://github.com/wiseman/track-name-haiku">on
           Github.</a>
       </p>
+      <h2>Special parameters</h2>
       <p>
-        If you want to see every haiku that can be made for an artist,
-        add <tt>&amp;all=1</tt> to the URL,
-        like <a href="http://songku.herokuapp.com/?artist=B.B.+King&amp;all=1">this</a>.
-        If you want to see the list of known tracks and their syllable
-        counts, add <tt>&amp;debug=1</tt> to the URL,
-        like <a href="http://songku.herokuapp.com/?artist=Lady+Gaga&amp;debug=1">this</a>.
-      </p>
+        <ul>
+          <li>
+            If you want to see more haikus on one page,
+            add <tt>&amp;n=5</tt> to the URL,
+            like <a href="http://songku.herokuapp.com/?artist=B.B.+King&amp;n=5">this</a>.
+            </li>
+          <li>If you want to see every haiku that can be made for an
+            artist, add <tt>&amp;all=1</tt> to the URL,
+            like <a href="http://songku.herokuapp.com/?artist=B.B.+King&amp;all=1">this</a>.
+          </li>
+          <li>
+            If you want to see the list of known tracks and their
+            syllable counts, add <tt>&amp;debug=1</tt> to the URL,
+            like <a href="http://songku.herokuapp.com/?artist=Lady+Gaga&amp;debug=1">this</a>.
+          </li>
       <address>
         <strong>John Wiseman</strong><br>
         <a href="mailto:jjwiseman@gmail.com">jjwiseman@gmail.com</a><br>
