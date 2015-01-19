@@ -20,16 +20,15 @@
   (= [user pass] [(env :repl-user false) (env :repl-password false)]))
 
 
-(def artist-tracks
+(def get-artist-info
   (memoize
    (fn [artist]
      (if artist
-       (let [result (freebase/query
-                     {:name artist
-                      :type "/music/artist"
-                      :track []
-                      :limit 1})]
-         (set (:track result)))
+       (freebase/query
+        {:name artist
+         :type "/music/artist"
+         :track []
+         :limit 1})
        nil))))
 
 
@@ -39,7 +38,9 @@
 
 (defn haiku-handler [params]
   (let [artist (:artist params)
-        tracks (artist-tracks (:artist params))
+        artist-info (get-artist-info artist)
+        tracks (set (remove nil? (:track artist-info)))
+        artist-name (:name artist-info)
         all-haikus (haiku/haikus tracks)
         haikus (if (:all params)
                  all-haikus
@@ -48,12 +49,14 @@
                     (parse-long n)
                     1)
                   (shuffle all-haikus)))]
+    (println artist tracks all-haikus haikus)
     {:status 200
      :headers {"Content-Type" "text/html; charset=utf-8"}
      :body (selmer/render-file
             "haiku.tmpl"
             {:debug (:debug params)
              :artist artist
+             :artist-name artist-name
              :tracks (map
                       (fn [track]
                         {:name track
