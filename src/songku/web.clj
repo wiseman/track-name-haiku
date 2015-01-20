@@ -21,7 +21,7 @@
 
 
 ;; Looks up artist info in freebase using MQL.
-(def get-artist-info
+(def %get-artist-info
   (memoize
    (fn [artist]
      (if artist
@@ -31,6 +31,16 @@
          :track []
          :limit 1})
        nil))))
+
+(defn get-artist-info [artist]
+  (try
+    (%get-artist-info artist)
+    (catch clojure.lang.ExceptionInfo e
+      (binding [*out* *err*]
+        (println "Got exception while trying to get artist info")
+        (println e)
+        (println (.getStackTrace e)))
+      :error)))
 
 
 (defn parse-long [s]
@@ -42,6 +52,11 @@
 ;; handle the one case we see.
 (defn fix-html-entities [name]
   (string/replace name #"&amp;" "&"))
+
+
+(def try-again-later
+  (str "Sorry, I think we hit our freebase API quota.  Try again in a minute "
+       "or two."))
 
 
 (defn haiku-handler [params]
@@ -74,7 +89,12 @@
                                          " or "
                                          (sort (haiku/syllables track)))))})
                       tracks)
-             :show-haikus (or (not artist) (not (empty? haikus)))
+             :error-message (if (= artist-info :error)
+                              try-again-later
+                              nil)
+             :show-haikus (or (= artist-info :error)
+                              (not artist)
+                              (not (empty? haikus)))
              :haikus (map vec haikus)})}))
 
 
