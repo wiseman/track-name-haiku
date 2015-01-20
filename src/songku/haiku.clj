@@ -20,10 +20,15 @@
     "barbarella" #{4}
     "beez" #{1}
     "bigga" #{2}
+    "cornhole" #{2}
+    "cunt" #{1}
     "da" #{1}
     "dayz" #{1}
     "fo" #{1}
     "fretless" #{2}
+    "fucking" #{2}
+    "gimme" #{2}
+    "gimmie" #{2}
     "gonna" #{2}
     "heartbreaker" #{3}
     "hovy" #{2}
@@ -42,6 +47,7 @@
     "niggas" #{2}
     "niggaz" #{2}
     "neptunes" #{2}
+    "nyc" #{3}
     "outro" #{2}
     "papi" #{2}
     "piranhas" #{2}
@@ -50,14 +56,19 @@
     "playtime" #{2}
     "remix" #{2}
     "saltines" #{2}
+    "scumbag" #{2}
+    "slut" #{1}
+    "sluts" #{1}
     "soho" #{2}
     "spanglish" #{2}
     "starships" #{2}
+    "sucking" #{2}
     "teardrop" #{2}
     "teardrops" #{2}
     "tha" #{1}
     "thang" #{1}
     "thugz" #{1}
+    "tonite" #{2}
     "uk" #{2}
     "u.s.a" #{3}
     "va" #{1}
