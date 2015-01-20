@@ -25,11 +25,14 @@
   (memoize
    (fn [artist]
      (if artist
-       (freebase/query
-        {:name artist
-         :type "/music/artist"
-         :track []
-         :limit 1})
+       (let [base-args {:name artist
+                        :type "/music/artist"
+                        :track []
+                        :limit 1}
+             args (if-let [api-key (env :freebase-api-key)]
+                    (assoc base-args :key api-key)
+                    base-args)]
+         (freebase/query args))
        nil))))
 
 (defn get-artist-info [artist]
