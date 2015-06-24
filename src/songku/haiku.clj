@@ -1,6 +1,7 @@
 (ns songku.haiku
   (:require [clojure.math.combinatorics :as combo]
-            [com.lemonodor.syllables :as syllables]
+            [clojure.set :as set]
+            [com.lemonodor.pronouncing :as pro]
             [songku.analysis :as analysis]))
 
 
@@ -8,9 +9,18 @@
   (reduce + s))
 
 
+(defn make-syllables-db []
+  (reduce (fn [db [word num-syllables]]
+            (assoc db word (set/union (get db word #{})
+                                      (set (list num-syllables)))))
+          {}
+          (for [[word phones] (pro/default-pronouncing-db)]
+            [word (pro/syllable-count phones)])))
+
+
 (def syllable-db
   (merge
-   (syllables/default-syllables-db)
+   (make-syllables-db)
    {"808" #{3}
     "909" #{3}
     "abc" #{3}
@@ -85,7 +95,7 @@
     sum
     (apply
      combo/cartesian-product
-     (map (partial syllables/count-syllables syllable-db)
+     (map syllable-db
           (analysis/tokenize text))))))
 
 
